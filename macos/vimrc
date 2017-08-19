@@ -1,0 +1,176 @@
+set nocompatible
+filetype off
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+
+" A colorful, dark color scheme for Vim
+" Bundle 'nanotech/jellybeans.vim'
+
+" Fuzzy file, buffer, mru, tag, etc finder
+Bundle 'ctrlpvim/ctrlp.vim'
+
+" Powerline is a statusline plugin for vim, and provides statuslines and prompts for several other applications,
+" including zsh, bash, tmux, IPython, Awesome and Qtile
+" Powerline needs fonts.
+" On Linux:
+" wget https://github.com/Lokaltog/powerline/raw/develop/font/PowerlineSymbols.otf https://github.com/Lokaltog/powerline/raw/develop/font/10-powerline-symbols.conf
+" mkdir -p ~/.fonts/ && mv PowerlineSymbols.otf ~/.fonts/
+" fc-cache -vf ~/.fonts
+" mkdir -p ~/.config/fontconfig/conf.d/ && mv 10-powerline-symbols.conf ~/.config/fontconfig/conf.d/
+" On Mac:
+" cd ~/Downloads
+" git clone https://github.com/powerline/fonts.git
+" cd fonts && ./install.sh
+" cd ..
+" rm -rf fonts
+Bundle 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
+
+" Color theme
+Bundle 'altercation/vim-colors-solarized'
+
+" Autocompletion
+" Bundle 'Valloric/YouCompleteMe'
+
+call vundle#end()
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+filetype plugin indent on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+
+" color scheme
+set background=dark
+colorscheme solarized
+syntax on
+
+" Set encoding
+set encoding=utf-8
+" Deactivate mode line magic (see http://vim.wikia.com/wiki/Modeline_magic)
+set modelines=0
+" enable system clipboard
+set clipboard=unnamed
+" speed up rendering
+set synmaxcol=128
+" scroll jump size
+set ttyscroll=10
+" no line wrap
+set nowrap
+" show line numbers
+set number
+" set cursor line
+set cursorline
+" change color visual mode in order to distinguish from cursor line
+hi Visual term=reverse cterm=reverse guibg=Grey
+" activate mouse support
+set mouse=a
+
+" fix backspace
+set backspace=2
+
+" TABS AND SPACES
+" ===============
+
+" columns per tab
+set tabstop=2
+" replace tabs with spaces
+set expandtab
+" reindent operation size (using < or >)
+set shiftwidth=2
+" indent when moving to the next line while writing code
+set autoindent
+" Visualize whitespaces
+set list lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
+" Map ctr+v+tab to tab symbol
+nnoremap <tab> <c-w><c-w>
+
+
+" Highlight search results
+set hlsearch
+" Start searching while typing
+set incsearch
+" Press Space to turn off highlighting and clear any message already displayed.
+:nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
+
+" case insensitive search
+set ignorecase
+" fallback to case sensitive if the pattern has uppercase letters
+set smartcase
+
+" BACKUP AND SWAP
+" ==============
+
+" no backup files *~
+set nobackup
+" no backup files while editing
+set nowritebackup
+" activate swap file
+set swapfile
+" common directory for all swap files
+set dir=~/.vimswp
+
+
+" ctrlp
+" =====
+let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+" order matching files top to bottom
+" let g:ctrlp_match_window = 'bottom,order:ttb'
+" always open files in new buffers
+let g:ctrlp_switch_buffer = 0
+" change the working directory during a Vim session and make CtrlP respect that
+let g:ctrlp_working_path_mode = 0
+" ignore non-text files
+set wildignore+=*/.git/*,*/tmp/*,*.so,*.class,*.pyc,*.bin,*.swp,*.jar,*.zip,*.gz,*.tar,*.pkl,*/data/*,*/node_modules/*,*/build/*,*/lcov-report/*
+
+
+" powerline
+" =========
+" Linux
+" set laststatus=2
+
+set term=xterm-256color
+set termencoding=utf-8
+" Linux
+set guifont=Ubuntu\ Mono\ derivative\ Powerline:10
+" Mac
+set guifont=Inconsolata\ for\ Powerline:h15
+set t_Co=256
+set fillchars+=stl:\ ,stlnc:\
+let g:Powerline_symbols = 'fancy'
+
+
+" CUSTOMIZATION
+" =============
+
+" Disable Arrow keys in Escape mode
+map <up> <nop>
+map <down> <nop>
+map <left> <nop>
+map <right> <nop>
+
+" Disable Arrow keys in Insert mode
+imap <up> <nop>
+imap <down> <nop>
+imap <left> <nop>
+imap <right> <nop>
+
+" Redefine leader character
+let mapleader=","
+
+" Strip trailing whitespace (,ss)
+function! StripWhitespace()
+  let save_cursor = getpos(".")
+  let old_query = getreg('/')
+  :%s/\s\+$//e
+  call setpos('.', save_cursor)
+  call setreg('/', old_query)
+  endfunction
+noremap <leader>ss :call StripWhitespace()<CR>
